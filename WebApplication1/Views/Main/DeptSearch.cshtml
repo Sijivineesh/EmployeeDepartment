@@ -1,0 +1,92 @@
+@Model IEnumerable<EmployeeDepartment.Models.DepartmentModel>
+
+    @{
+        ViewBag.Title = "DeptSearch";
+        var grid = new WebGrid(ViewBag.list);
+        Layout = "~/Views/Shared/Fixed.cshtml";
+    }
+
+    <h2>Department Details</h2>
+    @using (Html.BeginForm("DeptSearch", "Main", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+
+                    <div class="pull-left">
+                        @Html.ActionLink("Register New", "DepartmentReg")
+                    </div>
+                    <div class="col-md-3">
+                        <label>Search By Name</label>
+                        @Html.TextBox("Name", null, new { @class = "form-control valid", @placeholder = "Enter Name", @data_val = "true", @data_val_required = "Name is required", @required = "required" })
+                        @Html.ValidationSummary()
+                    </div>
+
+                    <div class="col-md-3" id="btnSearch" style="display:none">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </div><!-- /.col -->
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div id="grid" class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Employee Details</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
+                    <div>
+
+                        @grid.GetHtml(tableStyle: "table", htmlAttributes: new { id = "DataTable" }, headerStyle: "header", alternatingRowStyle: "alt",
+columns: grid.Columns(
+grid.Column("DeptName", "Department Name", canSort: true, style: "text-align-center"),
+grid.Column("Description", "Description", canSort: true, style: "text-align-center"),
+/*grid.Column(header: "Action",format:@<text>
+    <a href="#" Pk_ID="Pk_ID" class="edit">Edit</a>
+    <a href="#" Pk_ID="Pk_ID" class="delete">Delete</a></text>)})*/
+grid.Column(format: (item) => Html.ActionLink("Edit", "DeptEdit", new { Pk_ID = item.Pk_ID })),
+grid.Column(format: (item) => Html.ActionLink("Delete", "","",null, new { onclick = "deldept(" + item.Pk_ID + ")" }))
+))
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    }
+    @{
+        var message = TempData["notice"] ?? string.Empty;
+    }
+        <script>
+            function deldept(Pk_ID) {
+
+                if (confirm("Do you want to delete record ?")) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Main/DeptDelete',
+                        data: { Pk_ID: Pk_ID },
+                        dataType: "json",
+                        success: function () { alert('Success') }
+
+                    });
+
+                }
+                return false; //prevent the link's action
+            }
+        </script>
+
+
+
+
+
+
+
+
+
+

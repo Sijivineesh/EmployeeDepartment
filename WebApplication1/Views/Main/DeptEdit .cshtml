@@ -1,0 +1,56 @@
+@m EmployeeDepartment.Models.DepartmentModel
+@{
+    ViewBag.Title = "DeptEdit";
+     Layout = "~/Shared/Fixed.cshtml";
+}
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">        
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Edit Department Details</h3>
+            </div>
+            <br />            
+           @using (Html.BeginForm("DeptEdit", "Main", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+          @Html.ValidationSummary(true)
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="row">
+                                 <div class="col-xs-4">
+                                    <label for="Pk_ID">ID</label>
+                                    @Html.TextBoxFor(m => m.Pk_ID, new { @class = "form-control", @required = "required", @placeholder = "ID",Visible="false" })
+                                    @Html.ValidationMessageFor(m => m.Pk_ID, null, new { style = "color:red;" })
+                                </div>
+                                <div class="col-xs-4">
+                                    <label for="DeptName">Department Name</label>
+                                    @Html.TextBoxFor(m => m.DeptName, new { @class = "form-control", @required = "required", @placeholder = "Department Name" })
+                                    @Html.ValidationMessageFor(model => model.DeptName, null, new { style = "color:red;" })
+                                </div>
+                                 <div class="col-xs-4">
+                                    <label for="Description">Description</label>
+                                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @required = "required", @placeholder = "Description" })
+                                    @Html.ValidationMessageFor(model => model.Description, null, new { style = "color:red;" })
+                                </div>                                                         
+
+                            </div>
+                        </div>
+                        <div class="box-footer">
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            &nbsp; &nbsp;&nbsp;
+                            <button type="submit" class="btn btn-primary">Cancel</button>
+
+                        </div>
+                    </div>
+                            </form>
+            }
+
+            
+        </div>
+        
+    </div>
+    
+</section>
